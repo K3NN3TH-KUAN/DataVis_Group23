@@ -9,9 +9,13 @@
 
 <body>
 <!-- Topbar: replace emoji with proper SVG icons in the theme toggle button -->
+<!-- Topbar -->
 <header class="topbar" aria-label="Page header">
-    <div class="brand">Mobile Phone Enforcement Dashboard</div>
-    <!--  -->
+    <a href="index.html" class="brand-logo" aria-label="Go to Dashboard">
+        <img src="assets/image/DoITRDCSA_logo_inline_reversed.png" alt="DoITRDCSA logo">
+    </a>
+    <div class="brand">Mobile Phone Use</div>
+    <div class="topbar-right" aria-hidden="true"></div>
 </header>
 
 <nav class="primary-nav" role="tablist" aria-label="Section navigation">
@@ -21,7 +25,6 @@
     <a id="tab-data-prep" href="#data-prep" role="tab" aria-controls="data-prep" aria-selected="false">Data Cleaning</a>
     <a id="tab-data-exploration" href="#data-exploration" role="tab" aria-controls="data-explore" aria-selected="false">Data Exploration</a>
     <a id="tab-glossary" href="#glossary" role="tab" aria-controls="glossary" aria-selected="false">Glossary</a>
-    <a id="tab-faq" href="#faq" role="tab" aria-controls="faq" aria-selected="false">FAQ</a>
 </nav>
 
 <section class="doc-container">
@@ -400,27 +403,6 @@
             <div class="glossary-card" role="listitem" tabindex="0" aria-labelledby="term-fine-rate">
                 <h3 id="term-fine-rate" class="term">Fine rate per 10,000 driver licences</h3>
                 <p class="def">Fair comparison metric across jurisdictions with different population sizes.</p>
-            </div>
-        </div>
-    </article>
-
-    <article id="faq" class="section-panel" role="tabpanel" aria-labelledby="tab-faq">
-        <header class="section-header">
-            <h2>FAQ</h2>
-        </header>
-
-        <div class="grid grid-2">
-            <div class="card">
-                <h3>What time range is covered?</h3>
-                <p>Data sources generally cover <strong>2008–2024</strong>. Some jurisdictions may have more detailed coverage.</p>
-            </div>
-            <div class="card">
-                <h3>How are fine rates computed?</h3>
-                <p>Rates are computed using transparent formulas, usually normalised by a denominator like licences. See Methodology.</p>
-            </div>
-            <div class="card">
-                <h3>Are there limitations?</h3>
-                <p>Differences in reporting practices across jurisdictions may affect comparability. We document assumptions where relevant.</p>
             </div>
         </div>
     </article>
