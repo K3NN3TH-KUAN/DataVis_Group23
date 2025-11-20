@@ -16,14 +16,17 @@
         <section class="panel snap-section" id="section1">
 
             <!-- LOGO -->
-            <img src="assets/image/road.jpeg" alt="Road Image" class="header-img">
+            <img src="assets/image/road.jpeg" alt="Road Image" class="header-img lp-fade" style="--fade-delay: 0ms;">
 
-            <h1>Mobile Phone Use Enforcement in Australia</h1>
-            <p class="subtitle">How detection methods and enforcement changed from 2008–2024</p>
+            <h1 class="lp-fade" style="--fade-delay: 120ms;">Mobile Phone Use Enforcement in Australia</h1>
+            <p class="subtitle lp-fade" style="--fade-delay: 240ms;">How detection methods and enforcement changed from 2008–2024</p>
 
-            <button class="scroll-btn" onclick="scrollNext()">Scroll Down ↓</button>
+            <button class="scroll-btn" onclick="scrollNext()" aria-label="Scroll Down">
+                    <i class="bi bi-arrow-down" aria-hidden="true"></i>
+                    <span>Scroll Down</span>
+                </button>
 
-            <div class="footer-bar">
+            <div class="footer-bar lp-fade" style="--fade-delay: 480ms;">
                 <span>@COS30045 Data Visualisation Project</span>
                 <span>Voong Zhe Hong, Alvin, Kenneth</span>
             </div>
@@ -32,14 +35,11 @@
 
         <!-- Background Section -->
         <section id="background-section" class="snap-section">
-            <button class="back-btn" onclick="scrollPrev()" aria-label="Back to previous section">
-                <i class="bi bi-arrow-up-short" aria-hidden="true"></i>
-                <span>Back</span>
-            </button>
 
-            <h2 class="bg-title">Background</h2>
 
-            <div class="background-text">
+            <h2 class="bg-title bg-fade" style="--fade-delay: 0ms;">Background</h2>
+
+            <div class="background-text bg-fade" style="--fade-delay: 120ms;">
                 <p>
                     For a long time, Australia has had a problem with people using mobile phones while driving. Until 2020, the main way to catch offenders was for police officers to spot them visually, which was difficult and limited by their numbers and what they could see.
                 </p>
@@ -48,10 +48,10 @@
                 </p>
             </div>
 
-            <h3 class="audience-title">Who Uses This Dashboard?</h3>
+            <h3 class="audience-title bg-fade" style="--fade-delay: 200ms;">Who Uses This Dashboard?</h3>
 
             <div class="audience-grid">
-                <div class="audience-card">
+                <div class="audience-card bg-fade" style="--fade-delay: 300ms;">
                     <div class="audience-icon icon-gov" aria-hidden="true">
                         <i class="bi bi-bank"></i>
                     </div>
@@ -59,7 +59,7 @@
                     <p>Assess enforcement outcomes and inform legislation updates.</p>
                 </div>
 
-                <div class="audience-card">
+                <div class="audience-card bg-fade" style="--fade-delay: 380ms;">
                     <div class="audience-icon icon-agency" aria-hidden="true">
                         <i class="bi bi-shield-check"></i>
                     </div>
@@ -67,7 +67,7 @@
                     <p>Monitor compliance trends and identify high-risk regions.</p>
                 </div>
 
-                <div class="audience-card">
+                <div class="audience-card bg-fade" style="--fade-delay: 460ms;">
                     <div class="audience-icon icon-research" aria-hidden="true">
                         <i class="bi bi-bar-chart-line"></i>
                     </div>
@@ -77,10 +77,16 @@
             </div>
 
             <!-- Centered scroll button for Background section -->
-            <button class="scroll-btn center" onclick="scrollNext()" aria-label="Scroll Down">
-                <i class="bi bi-arrow-down-short" aria-hidden="true"></i>
-                <span>Scroll Down</span>
-            </button>
+            <div class="bg-actions" role="group" aria-label="Background actions" style="--fade-delay: 560ms;">
+                <button class="scroll-btn" onclick="scrollNext()" aria-label="Scroll Down">
+                    <i class="bi bi-arrow-down" aria-hidden="true"></i>
+                    <span>Scroll Down</span>
+                </button>
+                <button class="back-btn" onclick="scrollPrev()" aria-label="Back to previous section">
+                    <i class="bi bi-arrow-up" aria-hidden="true"></i>
+                    <span>Back</span>
+                </button>
+            </div>
 
             <div class="footer-bar">
                 <span>@COS30045 Data Visualisation Project</span>
@@ -89,41 +95,53 @@
         </section>
 
         <!-- Visualisation 1 Section -->
-        <section class="viz-section snap-section" id="blank1-section">
-            <button class="back-btn" onclick="scrollPrev()">⬆ Back</button>
-            
+        <section class="viz-section snap-section" id="blank1-section">         
             <div class="viz-grid">
-                <!-- Chart area (70% on RIGHT for section 3) -->
-                <div class="viz-chart">
-                    <div class="chart-card">
-                        <div id="chart" class="chart-host"></div>
-                    </div>
+                <!-- Controls and info area (30% on LEFT for section 3) -->
+                <div class="viz-controls-info" aria-label="Controls and insights">
+                    <!-- Filter controls at top -->
+                    <section class="control-card" aria-labelledby="filters1-title">
+                        <form class="filter-form" aria-describedby="filters1-title">
+                            <label class="field-label" id="period1-label">Period</label>
+                            <div class="period-row" role="group" aria-labelledby="period1-label">
+                                <label class="visually-hidden" for="year1-start">Start Year</label>
+                                <select id="year1-start" aria-label="Start Year"></select>
+                                <label class="visually-hidden" for="year1-end">End Year</label>
+                                <select id="year1-end" aria-label="End Year"></select>
+                            </div>
+
+                            <label class="field-label" for="det-method">Detection Method</label>
+                            <select id="det-method" aria-label="Detection Method"></select>
+                        </form>
+                    </section>
+                    
+                    <!-- Info panel with consistent styling -->
+                    <aside class="info-panel" role="complementary" aria-labelledby="info1-title">
+                        <h2 id="info1-title" class="info-title">Key Findings</h2>
+                        <ul class="info-points" role="list">
+                            <li>In 2024, 330,926 mobile phone use fines were issued: 40,931 by police (12.4%) and 289,995 by cameras (87.6%).</li>
+                            <li>Camera issued fines increased sharply after 2020.</li>
+                            <li>In contrast, police issued fines dropped over the time.</li>
+                            <li>Enforcement of mobile phone use fines has successfully shifted from manual to AI-based detection methods.</li>
+                        </ul>
+                        <div class="section-actions" aria-label="Section actions">
+                            <button class="btn-pill primary scroll-down" type="button" onclick="scrollNext()" aria-label="Scroll Down">
+                                <i class="btn-icon bi bi-arrow-down" aria-hidden="true"></i>
+                                <span class="btn-text">Scroll Down</span>
+                            </button>
+                            <button class="btn-pill secondary back-up" type="button" onclick="scrollPrev()" aria-label="Back">
+                                <i class="btn-icon bi bi-arrow-up" aria-hidden="true"></i>
+                                <span class="btn-text">Back</span>
+                            </button>
+                        </div>
+                    </aside>
                 </div>
                 
-                <!-- Controls and info area (30% on LEFT for section 3) -->
-                <div class="viz-controls-info">
-                    <!-- Filter controls at top -->
-                    <div class="filter-container">
-                        <div class="viz-controls compact">
-                            <label>Start <select id="year1-start"></select></label>
-                            <label>End <select id="year1-end"></select></label>
-                            <div class="btn-group">
-                                <button id="btn-police" class="toggle active">Police</button>
-                                <button id="btn-camera" class="toggle active">Camera</button>
-                            </div>
-                        </div>
+                <!-- Chart area (70% on RIGHT for section 3) -->
+                <div class="viz-chart">
+                    <div class="chart-card" role="figure" aria-label="Annual Fines by Mobile Phone Use chart">
+                        <div id="chart" class="chart-host"></div>
                     </div>
-                    
-                    <!-- Description container at bottom -->
-                    <aside class="description-container">
-                        <h2>Trend in Enforcement Over Time</h2>
-                        <ul>
-                            <li>Camera-detected fines increased sharply after 2020.</li>
-                            <li>Police-issued fines dropped over the same period.</li>
-                            <li>Shift from manual to AI-based detection methods.</li>
-                        </ul>
-                        <button class="scroll-btn" onclick="scrollNext()">Scroll Down ↓</button>
-                    </aside>
                 </div>
             </div>
             
@@ -164,8 +182,8 @@
                                 <div class="multi-menu" id="jur-menu" role="listbox" aria-multiselectable="true"></div>
                             </div>
                             
-                            <label class="field-label" for="det-method">Detection Method</label>
-                            <select id="det-method" aria-label="Detection Method"></select>
+                            <label class="field-label" for="det2-method">Detection Method</label>
+                            <select id="det2-method" aria-label="Detection Method"></select>
                         </form>
                     </section>
         
@@ -232,7 +250,7 @@
                             <li>Earlier and wider camera deployment in these states.</li>
                             <li>Camera enforcement appears more effective than police-only.</li>
                         </ul>
-                        <button class="scroll-btn" onclick="scrollNext()">Scroll Down ↓</button>
+                        <button class="scroll-btn lp-fade" onclick="scrollNext()" style="--fade-delay: 360ms;">Scroll Down ↓</button>
                     </aside>
                 </div>
             </div>

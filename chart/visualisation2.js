@@ -4,7 +4,7 @@
         right: 100,
         bottom: 0,
         left: 100
-    }; // increase bottom for rotated ticks + legend
+    }; 
     var chartEl = document.getElementById('chart2');
     var totalWidth = (chartEl && chartEl.clientWidth) ? chartEl.clientWidth : 960;
 
@@ -86,7 +86,7 @@
         var jurSelect = document.getElementById('jur-select');
         var jurToggle = document.getElementById('jur-toggle');
         var jurMenu = document.getElementById('jur-menu');
-        var methodSel = document.getElementById('det-method');
+        var methodSel = document.getElementById('det2-method');
 
         var seriesKeys = Object.keys(data2[0]).filter(function(k){ return k !== 'YEAR'; });
         color.domain(seriesKeys);
@@ -149,15 +149,15 @@
             });
             var prev = methodSel.value;
             methodSel.innerHTML = '';
-            var optB = document.createElement('option'); optB.value='Both'; optB.textContent='Both'; methodSel.appendChild(optB);
+            var optB = document.createElement('option'); optB.value='All'; optB.textContent='All'; methodSel.appendChild(optB);
             Array.from(set).sort().forEach(function(m){ var o=document.createElement('option'); o.value=m; o.textContent=m; methodSel.appendChild(o); });
-            methodSel.value = (prev && Array.from(set).includes(prev)) ? prev : 'Both';
+            methodSel.value = (prev && Array.from(set).includes(prev)) ? prev : 'All';
         }
 
         function filteredData(){
             var start = +startSel.value, end = +endSel.value;
             var method = methodSel.value;
-            if (method === 'Both' || !method) {
+            if (method === 'All' || !method) {
                 return data2.filter(function(d){ return d.YEAR >= start && d.YEAR <= end; });
             } else {
                 return data5.filter(function(d){ return d.DETECTION_METHOD === method && d.YEAR >= start && d.YEAR <= end; });
@@ -179,7 +179,9 @@
             svg.selectAll('*').remove();
 
             var isMobile = window.innerWidth <= 768;
-            var x = d3.scaleLinear().domain(d3.extent(f, function(d){ return d.YEAR; })).range([0, width]);
+            var x = d3.scaleLinear()
+                .domain(d3.extent(f, function(d){ return d.YEAR; }))
+                .range([0, width]);
 
             var yearVals = f.map(function(d){ return d.YEAR; }).filter(function(v,i,a){ return a.indexOf(v)===i; }).sort(d3.ascending);
             var isCamera = methodSel && /camera/i.test(methodSel.value);
@@ -229,7 +231,7 @@
 
             var yAxis = d3.axisLeft(y)
                 .tickValues(ticks)
-                .tickFormat(d3.format('~d'));
+                .tickFormat(d3.format(','));
 
             var yAxisG = svg.append('g')
                 .attr('transform','translate(0,0)')
@@ -317,7 +319,13 @@
                     if (!overlapped) {
                         labelYs.push(gy);
                         var gx = width + 20;
-                        var g = svg.append('g').attr('transform','translate('+gx+','+gy+')');
+                        var g = svg.append('g')
+                            .attr('class','series-end-label label-'+key)
+                            .attr('transform','translate('+gx+','+gy+')')
+                            .attr('role','button')
+                            .attr('tabindex', 0)
+                            .attr('aria-label','Highlight '+key)
+                            .style('cursor','pointer');
                         var label = g.append('text')
                             .attr('x', 0)
                             .attr('y', 0)
@@ -338,6 +346,13 @@
                             .attr('opacity', 1)
                             .attr('stroke', color(key))
                             .attr('stroke-width', 0.8);
+                        function highlightFromLabel(ev){
+                            if (window.chart2Ctx && window.chart2Ctx.applySelection){
+                                window.chart2Ctx.applySelection(key, last.YEAR, ev);
+                            }
+                        }
+                        g.on('click', function(ev){ highlightFromLabel(ev); })
+                         .on('keydown', function(ev){ if (ev.code==='Enter' || ev.code==='Space'){ highlightFromLabel(ev); } });
                     }
                     pendingAnimations--;
                     if (pendingAnimations<=0){ window.chart2Ctx.animating = false; if(window.chart2Ctx.onAnimDone) window.chart2Ctx.onAnimDone(); }
@@ -346,7 +361,7 @@
 
             // Title
             svg.append('text')
-                .attr('x', -80)
+                .attr('x', -90)
                 .attr('y', -50)
                 .attr('text-anchor', 'start')
                 .attr('dominant-baseline','hanging')
@@ -381,7 +396,7 @@
                     .attr('x', lx + 24)
                     .attr('y', 0)
                     .attr('dominant-baseline', 'middle')
-                    .style('font-size', isMobile ? '12px' : '13px')
+                    .style('font-size', isMobile ? '16px' : '18px')
                     .text(k);
             });
 
@@ -389,7 +404,7 @@
             svg.append('text')
                 .attr('transform', 'rotate(-90)')
                 .attr('x', -height / 2)
-                .attr('y', -60)
+                .attr('y', -70)
                 .attr('text-anchor', 'middle')
                 .style('font-size', '18px')
                 .text(yLabel);
