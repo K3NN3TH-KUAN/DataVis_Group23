@@ -146,9 +146,8 @@ document.addEventListener('DOMContentLoaded', function () {
         entries.forEach(entry => {
           const el = entry.target;
           if (entry.isIntersecting) el.classList.add('visible');
-          else el.classList.remove('visible');
         });
-      }, { root: null, threshold: 0.25, rootMargin: '0px 0px -10% 0px' });
+      }, { root: null, threshold: 0.15, rootMargin: '0px 0px -10% 0px' });
       items.forEach(el => itemsObserver.observe(el));
 
       const sectionObserver = new IntersectionObserver((entries) => {
@@ -169,10 +168,26 @@ document.addEventListener('DOMContentLoaded', function () {
     } else {
       const bgObserver = new IntersectionObserver((entries) => {
         const entry = entries[0];
-        if (entry.isIntersecting) bgSection.classList.add('in-view');
+        if (entry && entry.isIntersecting) bgSection.classList.add('in-view');
         else bgSection.classList.remove('in-view');
       }, { threshold: 0.35 });
       bgObserver.observe(bgSection);
+    }
+  }
+
+  // Landing section (section1): toggle 'in-view' for fade-up sequencing
+  const landing = document.querySelector('#section1');
+  if (landing) {
+    if (!('IntersectionObserver' in window)) {
+      landing.classList.add('in-view');
+    } else {
+      const landingObserver = new IntersectionObserver((entries) => {
+        const entry = entries[0];
+        if (!entry) return;
+        if (entry.isIntersecting) landing.classList.add('in-view');
+        else landing.classList.remove('in-view');
+      }, { threshold: 0.35 });
+      landingObserver.observe(landing);
     }
   }
 });
