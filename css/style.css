@@ -71,13 +71,17 @@ body {
 
 /* Background Section */
 #background-section {
-    padding: 60px 30px 20px;
+    padding: 0;
     min-height: 100vh;
     width: 100vw; /* ensure full viewport width */
     position: relative;
     box-sizing: border-box;
     scroll-snap-align: start;
     background-color: #f5f8fc;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    margin: 0 auto;
 }
 
 /* Charts Section */
@@ -304,11 +308,6 @@ body {
   transform-box: fill-box;
 }
 
-/* Compact all text elements */
-/* #chart3 text {
-  font-size: 11px !important;
-} */
-
 #chart3 .hover-info {
   font-size: 11px !important;
 }
@@ -392,9 +391,6 @@ body {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
 }
-/* .panel > * {
-  animation: fadeIn 1s ease-in-out;
-} */
 
 /* Logo fade-in */
 @keyframes fadeInLogo {
@@ -407,8 +403,6 @@ body {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(7px); }
 }
-
-/* ===== HEADER & LOGO ===== */
 
 /* Top Left Government Logo */
 .top-left-logo {
@@ -427,7 +421,6 @@ body {
   opacity: 1;
   transform: scale(1.05);
 }
-
 
 /* ===== TYPOGRAPHY ===== */
 
@@ -644,11 +637,6 @@ h2 {
     line-height: 1.45;
 }
 
-
-/* .panel > * {
-  animation: fadeIn 1s ease-in-out;
-} */
-
 /* Logo fade-in */
 @keyframes fadeInLogo {
   from { opacity: 0; transform: translateY(-10px); }
@@ -680,7 +668,6 @@ h2 {
   opacity: 1;
   transform: scale(1.05);
 }
-
 
 /* ===== TYPOGRAPHY ===== */
 
@@ -850,6 +837,12 @@ h2 {
   margin: 0;
 }
 
+/* Background section: let footer sit after content and push to bottom */
+#background-section .footer-bar {
+  position: static;
+  margin-top: auto;
+}
+
 /* Background section footer */
 #background-section .background-footer {
     width: 100%;
@@ -868,209 +861,6 @@ h2 {
   margin: 4px 0 0;
   font-size: 16px;
   opacity: 0.9;
-}
-
-/* ===== RESPONSIVE DESIGN ===== */
-
-@media (max-width: 1024px) {
-  .viz-grid {
-    grid-template-columns: 1fr;
-    grid-template-rows: 60% 40%;
-    height: var(--viz-grid-h, 80vh);
-    gap: 15px;
-    align-items: stretch;
-  }
-  
-  .viz-chart {
-    grid-column: 1;
-    grid-row: 1;
-  }
-  
-  .viz-controls-info {
-    grid-column: 1;
-    grid-row: 2;
-    flex-direction: row;
-    gap: 15px;
-    height: 100%;
-    min-height: 0;
-    align-items: stretch;
-    overflow: hidden;
-  }
-  
-  .filter-container,
-  .description-container {
-    flex: 1;
-    min-height: 200px;
-  }
-  
-  /* Override specific sections for tablet */
-  #blank1-section .viz-grid,
-  #blank2-section .viz-grid,
-  #blank3-section .viz-grid {
-    grid-template-columns: 1fr;
-    grid-template-rows: 60% 40%;
-  }
-  
-  #blank1-section .viz-chart,
-  #blank2-section .viz-chart,
-  #blank3-section .viz-chart {
-    grid-column: 1;
-    grid-row: 1;
-  }
-  
-  #blank1-section .viz-controls-info,
-  #blank2-section .viz-controls-info,
-  #blank3-section .viz-controls-info {
-    grid-column: 1;
-    grid-row: 2;
-    height: 100%;
-    min-height: 0;
-    align-items: stretch;
-    overflow: hidden;
-  }
-  
-  /* Adjust headings for tablet */
-  h1 {
-    font-size: 36px;
-  }
-  
-  h2 {
-    font-size: 28px;
-  }
-  
-  .description-container h2 {
-    font-size: 20px;
-  }
-}
-
-@media (max-width: 768px) {
-  .viz-controls-info {
-    flex-direction: column;
-    gap: 15px;
-    height: 100%;
-    min-height: 0;
-    align-items: stretch;
-    overflow: hidden;
-  }
-  
-  .filter-container,
-  .description-container {
-    min-height: auto;
-    flex: none;
-  }
-  
-  .viz-grid {
-    gap: 15px;
-    height: var(--viz-grid-h, 75vh);
-    align-items: stretch;
-  }
-  
-  /* Mobile adjustments */
-  .top-left-logo {
-    width: 200px;
-    left: 15px;
-    top: 15px;
-  }
-  
-  .back-btn {
-    top: 20px;
-    right: 20px;
-    padding: 6px 14px;
-    font-size: 13px;
-  }
-  
-  h1 {
-    font-size: 32px;
-  }
-  
-  h2 {
-    font-size: 24px;
-  }
-  
-  .description-container h2 {
-    font-size: 18px;
-  }
-  
-  .cta-actions {
-    flex-direction: column;
-    gap: 15px;
-  }
-  
-  .cta-btn {
-    padding: 12px 20px;
-    font-size: 15px;
-  }
-  
-  /* Audience grid mobile */
-  #background-section .audience-grid {
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  #background-section .audience-card {
-    width: 100%;
-    max-width: 300px;
-  }
-  
-  .viz-section {
-    padding: 50px 15px 0;
-  }
-}
-
-@media (max-width: 480px) {
-  .panel,
-  .viz-section,
-  #background-section,
-  #charts-section {
-    padding: 30px 15px 0;
-  }
-  
-  h1 {
-    font-size: 28px;
-  }
-  
-  h2 {
-    font-size: 22px;
-  }
-  
-  .description-container h2 {
-    font-size: 16px;
-    margin-bottom: 10px;
-  }
-  
-  .subtitle {
-    font-size: 16px;
-  }
-  
-  .top-left-logo {
-    width: 160px;
-  }
-  
-  .viz-controls {
-    gap: 8px;
-  }
-  
-  .btn-group {
-    justify-content: center;
-  }
-  
-  .footer-bar {
-    flex-direction: column;
-    gap: 5px;
-    text-align: center;
-    padding: 10px 20px;
-  }
-  
-  .filter-container,
-  .description-container {
-    padding: 15px;
-  }
-  
-  .viz-grid {
-    height: var(--viz-grid-h, 70vh);
-    gap: 12px;
-    align-items: stretch;
-  }
 }
 
 /* ===== SCROLLBAR STYLING FOR DESCRIPTION CONTAINER ===== */
@@ -1164,7 +954,6 @@ h2 {
   width: 100%;
   height: auto;
   max-width: 150px;
-  /* margin-bottom: 20px; */
   border-radius: 12px;
   box-shadow: 0 2px 6px rgba(16, 24, 40, 0.06);
 }
@@ -1232,25 +1021,14 @@ h2 {
 
 /* Small circular icon bubble inside pill */
 .pill-icon {
-  /* width: 36px;
-  height: 36px; */
-  /* border-radius: 9999px; */
   display: grid;
   place-items: center;
-  /* background: #d1d5db; */
   color: #111;
   font-size: 40px;
 }
 
 .pill-icon .bi {
   font-size: 22px;
-}
-
-/* Responsive breakpoints (match layout in reference) */
-@media (max-width: 768px) {
-  .discover-grid { grid-template-columns: 1fr; }
-  .discover-title { font-size: 32px; }
-  .discover-subtitle { font-size: 15px; }
 }
 
 /* Reduced motion for accessibility */
@@ -1334,12 +1112,15 @@ h2 {
 #section1 .scroll-btn i{font-size:22px;line-height:1}
 #section1 .lp-fade{opacity:0;transform:translateY(12px);transition:opacity 480ms ease, transform 480ms ease;transition-delay:var(--fade-delay,0ms)}
 #section1.in-view .lp-fade{opacity:1;transform:translateY(0)}
+
 @media (prefers-reduced-motion: reduce){#section1 .lp-fade{transition:none;opacity:1;transform:none}}
+
 /* Background actions container: place Back and Scroll side by side */
 #background-section .bg-actions{position:absolute;left:50%;transform:translateX(-50%);bottom:10%;display:flex;gap:12px;align-items:center;z-index:6}
 #background-section .bg-actions .back-btn{position:static;top:auto;right:auto;padding:10px 16px;border-radius:12px;background:#ffffff;color:#0b3b75;border:1px solid rgba(0,0,0,0.08);box-shadow:0 10px 18px rgba(0,0,0,0.12);font-weight:700;animation:jumpUp 2s ease-in-out infinite}
 #background-section .bg-actions .back-btn:hover{transform:translateY(-1px);box-shadow:0 12px 20px rgba(0,0,0,0.12);background:#f9fafb}
 #background-section .bg-actions .scroll-btn{background:var(--brand);color:#fff;border:none;box-shadow:0 10px 18px rgba(0,0,0,0.12)}
+
 /* #background-section .bg-actions .back-btn i,#background-section .bg-actions .scroll-btn i{font-size:22px;line-height:1} */
 @keyframes jumpUp{0%{transform:translateY(0)}22%{transform:translateY(-8px)}36%{transform:translateY(0)}52%{transform:translateY(-4px)}68%{transform:translateY(0)}100%{transform:translateY(0)}}
 
@@ -1677,72 +1458,6 @@ body[data-theme="dark"] {
   box-shadow: 0 0 0 4px rgba(255,255,255,0.45), 0 10px 18px rgba(0,0,0,0.14);
 }
 
-/* Responsive tweaks to match reference at smaller sizes */
-@media (max-width: 1024px) {
-  #blank1-section .viz-grid, 
-  #blank2-section .viz-grid,
-  #blank3-section .viz-grid {
-    grid-template-columns: 1fr;
-    grid-template-rows: 60% 40%;
-    gap: 16px;
-  }
-  #blank1-section .viz-controls-info, 
-  #blank2-section .viz-controls-info,
-  #blank3-section .viz-controls-info {
-    flex-direction: row;
-    gap: 16px;
-    min-height: 0;
-    align-items: stretch;
-    height: 100%;
-    overflow: hidden;
-  }
-  #blank1-section .control-card, 
-  #blank2-section .control-card,
-  #blank3-section .control-card {
-    flex: 1 1 40%;
-  }
-  #blank1-section .info-panel, 
-  #blank2-section .info-panel,
-  #blank3-section .info-panel {
-    flex: 1 1 60%;
-    min-height: 0;
-    overflow: auto;
-    max-width: 100%;
-  }
-}
-
-@media (max-width: 768px) {
-  #blank1-section .viz-controls-info, 
-  #blank2-section .viz-controls-info,
-  #blank3-section .viz-controls-info {
-    flex-direction: column;
-    min-height: 0;
-    align-items: stretch;
-    height: 100%;
-    overflow: hidden;
-  }
-  #blank1-section .control-card, 
-  #blank2-section .control-card,
-  #blank3-section .control-card {
-    flex: 0 0 auto;
-    max-width: 100%;
-  }
-  #blank1-section .info-panel, 
-  #blank2-section .info-panel,
-  #blank3-section .info-panel { 
-    flex: 1 1 auto;
-    min-height: 0;
-    max-width: 100%;
-    overflow: auto;
-  }
-  #blank1-section .section-actions, 
-  #blank2-section .section-actions,
-  #blank3-section .section-actions {
-    justify-content: center;
-    gap: 16px;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   #blank1-section .btn-pill, 
   #blank2-section .btn-pill,
@@ -1836,15 +1551,6 @@ body[data-theme="dark"] {
 #blank2-section .multi-menu label:hover { background: #f5f7fb; }
 #blank2-section .multi-menu input[type="checkbox"] { accent-color: #075db3; }
 
-/* Responsive: stack label above select on small screens */
-@media (max-width: 480px) {
-  .control-card .filter-form {
-    grid-template-columns: 1fr;
-  }
-  .control-card .filter-form .field-label {
-    margin-bottom: 4px;
-  }
-}
 /* Fifth section checkbox dropdown for detection method */
 #blank3-section .dropdown-checkbox { position: relative; display: inline-block; }
 #blank3-section .dropdown-checkbox .dropdown-btn {
@@ -1873,3 +1579,88 @@ body[data-theme="dark"] {
 }
 #blank3-section .dropdown-checkbox .opt { display: flex; align-items: center; gap: 8px; padding: 6px 4px; color: #0f172a; }
 #blank3-section .dropdown-checkbox .opt input[type="checkbox"] { width: 16px; height: 16px; }
+
+@media (max-width: 1024px) {
+  #background-section .bg-title { font-size: 30px; }
+  #background-section .audience-title { font-size: 20px; }
+  #background-section .background-text { max-width: 600px; margin: 0 auto 16px; }
+  #background-section .audience-grid { gap: 16px; margin-bottom: 16px; }
+  #background-section .audience-card h4 { margin-top: 12px; font-size: 18px; }
+  #background-section .audience-card { width: 260px; padding: 8px 12px; }
+  #background-section .audience-icon { width: 40px; height: 40px; }
+  #background-section .bg-actions { position: static; bottom: auto; left: auto; transform: none; display: flex; justify-content: center; gap: 12px; margin-top: 16px; }
+  #background-section .footer-bar { margin-top: 20px; }
+
+  /* Discover More */
+  #charts-section { padding: 0; }
+  .discover-title { font-size: 34px; }
+  .discover-subtitle { font-size: 18px; max-width: 720px; }
+  .discover-grid { width: 90vw; grid-template-columns: repeat(2, minmax(240px, 1fr)); gap: 18px; }
+  .discover-card { padding: 16px; }
+}
+
+@media (max-width: 768px) {
+  /* Landing page */
+  #section1 { padding: 28px 14px 0; }
+  #section1 h1 { font-size: 28px; }
+  #section1 .subtitle { font-size: 15px; margin-bottom: 24px; }
+  .scroll-btn { padding: 12px 22px; font-size: 15px; }
+
+  /* Background section */
+  #background-section .bg-title { font-size: 28px; }
+  #background-section .audience-title { font-size: 20px; }
+  #background-section .background-text { max-width: 80vw; font-size: 16px; line-height: 1.6; margin-bottom: 14px; }
+  #background-section .audience-grid { justify-content: center; }
+  #background-section .audience-icon { width: 38px; height: 38px; }
+  #background-section .bg-actions { bottom: 8%; gap: 10px; }
+
+  /* Discover More section*/
+  .discover-title { font-size: 32px; }
+  .discover-subtitle { font-size: 16px; max-width: 86vw; }
+  .discover-grid { width: 92vw; grid-template-columns: 1fr; gap: 16px; }
+  .discover-card { padding: 16px; }
+  .cta-top-btn.pill { padding: 10px 18px; font-size: 15px; }
+  .card-title { font-size: 18px;}
+  .card-desc { font-size: 15px; line-height: 1.6; }
+
+  .viz-section .viz-grid { grid-template-columns: 1fr 1fr; gap: 16px; width: 92vw; }
+  #blank1-section .viz-grid,
+  #blank2-section .viz-grid,
+  #blank3-section .viz-grid { grid-template-columns: 1fr 1fr; gap: 16px; width: 92vw; }
+  .viz-controls { gap: 12px; }
+  .top-left-logo { display: none; }
+}
+
+@media (max-width: 480px) {
+  #section1 { padding: 24px 12px 0; }
+  #section1 h1 { font-size: 26px; }
+  #section1 .subtitle { font-size: 14px; margin-bottom: 20px; }
+  .viz-section .viz-grid { grid-template-columns: 1fr; gap: 12px; width: 94vw; }
+  #blank1-section .viz-grid,
+  #blank2-section .viz-grid,
+  #blank3-section .viz-grid { grid-template-columns: 1fr; gap: 12px; width: 94vw; }
+  .footer-bar { flex-direction: column; align-items: center; gap: 6px; font-size: 12px; padding: 10px 14px; }
+  .scroll-btn { padding: 14px 24px; font-size: 16px; }
+  #section1 .scroll-btn i { font-size: 16px; }
+  .toggle { padding: 10px 14px; min-height: 44px; }
+
+  #background-section .bg-title { font-size: 24px; }
+  #background-section .audience-title { font-size: 20px; }
+  #background-section .background-text { max-width: 80vw; font-size: 15px; line-height: 1.6; }
+  #background-section .background-text p { font-size: 15px;}
+  #background-section .audience-grid { gap: 12px; }
+  #background-section .audience-card { width: 80%; padding: 14px 12px; }
+  #background-section .audience-card h4 { font-size: 16px; }
+  #background-section .audience-card p { font-size: 14px; }
+  #background-section .bg-actions { bottom: 6%;  gap: 10px; }
+  #background-section .bg-actions .scroll-btn, #background-section .bg-actions .back-btn { padding: 12px 18px; font-size: 16px; min-height: 44px; }
+
+  /* Discover More */
+  .discover-title { font-size: 24px; }
+  .discover-subtitle { font-size: 15px; max-width: 80vw; }
+  .discover-grid { width: 80vw; grid-template-columns: 1fr; gap: 14px; }
+  .discover-card { padding: 14px; }
+  .cta-top-btn.pill { font-size: 15px; min-height: 44px; margin-bottom: 12px; margin-top: 12px;}
+  .card-title { font-size: 16px;}
+  .card-desc { font-size: 14px; line-height: 1.6; }
+}
