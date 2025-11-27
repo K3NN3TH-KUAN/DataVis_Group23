@@ -19,8 +19,13 @@
   function ensureSvg(){
     var host = getContainer();
     if (!host) return;
-    var totalW = host.clientWidth || 600;
-    var totalH = host.clientHeight || 280;
+    var rect = host.getBoundingClientRect();
+    var totalW = Math.round(rect.width || host.clientWidth || 600);
+    var totalH = Math.max(320, Math.round(rect.height || host.clientHeight || 320));
+    var fs = !!document.fullscreenElement;
+    state.margin.top = fs ? 50 : 34;
+    state.margin.bottom = fs ? 44 : 54;
+    state.margin.left = fs ? 90 : 108;
     state.width = totalW - state.margin.left - state.margin.right;
     state.height = totalH - state.margin.top - state.margin.bottom;
     if (!state.svg){
@@ -31,7 +36,6 @@
         .attr('preserveAspectRatio','none')
         .style('font-family','Segoe UI, Arial, sans-serif');
       state.g = state.svg.append('g').attr('transform','translate(' + state.margin.left + ',' + state.margin.top + ')');
-      // Tooltip container (HTML)
       var tipHost = document.getElementById('bar3-tip');
       if (!tipHost){
         tipHost = document.createElement('div');
@@ -52,12 +56,12 @@
         tipHost.style.transform = 'translate(0px,0px)';
         tipHost.style.transition = 'transform 100ms ease-out, opacity 120ms ease-out';
         tipHost.style.willChange = 'transform';
-        // attach to the info panel card (#info3-bars) to position inside
         var infoCard = document.getElementById('info3-bars');
         if (infoCard) { infoCard.style.position = 'relative'; infoCard.appendChild(tipHost); }
       }
     } else {
       state.svg.attr('width', totalW).attr('height', totalH);
+      if (state.g) { state.g.attr('transform','translate(' + state.margin.left + ',' + state.margin.top + ')'); }
     }
   }
 
@@ -139,7 +143,12 @@
     }
     rows.sort(function(a,b){ return d3.descending(a.RATE, b.RATE); });
 
-    var y = d3.scaleBand().domain(rows.map(function(d){ return d.JURISDICTION; })).range([0, state.height]).padding(0.2);
+    var rowStep = 36;
+    var maxPlotH = Math.max(160, state.height);
+    var plotH = Math.min(rows.length * rowStep, maxPlotH);
+    state.svg.attr('height', plotH + state.margin.top + state.margin.bottom);
+
+    var y = d3.scaleBand().domain(rows.map(function(d){ return d.JURISDICTION; })).range([0, plotH]).padding(0.2).round(true);
     var xMax = d3.max(rows, function(d){ return d.RATE; }) || 0;
     var x = d3.scaleLinear().domain([0, xMax * 1.05]).nice().range([0, state.width]);
 
@@ -167,7 +176,7 @@
       .text('Fines per 10,000 by Jurisdiction');
 
     // Gridlines (vertical dotted)
-    var grid = d3.axisBottom(x).ticks(6).tickSize(state.height).tickFormat('');
+    var grid = d3.axisBottom(x).ticks(6).tickSize(plotH).tickFormat('');
     state.g.append('g')
       .attr('class','grid')
       .attr('transform','translate(0,0)')
@@ -224,11 +233,18 @@
         .attr('opacity', function(dd){ return (!state.focusedAbbr || dd.JURISDICTION === state.focusedAbbr) ? 1 : 0.35; });
     }
 
-    // Expose API for map to sync focus on bars
+    // Expose API for map to sync focus on bars and external redraws
     if (!window.chart3BarsApi) window.chart3BarsApi = {};
     window.chart3BarsApi.focusJurisdiction = function(code){
       state.focusedAbbr = code || null;
       applyBarFocus();
+    };
+    window.chart3BarsApi.redraw = function(){ draw(); };
+    window.chart3BarsApi.redrawIfVisible = function(){ var viewBars = document.getElementById('info3-bars'); if (viewBars && !viewBars.hasAttribute('hidden')) { draw(); } };
+    window.chart3BarsApi.rebuild = function(){
+      if (state.svg){ try { state.svg.remove(); } catch(e){}
+        state.svg = null; state.g = null; }
+      draw();
     };
 
     function positionTipToPointer(event){
@@ -265,7 +281,7 @@
 
     // Bottom x-axis (optional; subtle)
     var ax = state.g.append('g')
-      .attr('transform','translate(0,' + state.height + ')')
+      .attr('transform','translate(0,' + plotH + ')')
       .call(d3.axisBottom(x).ticks(6));
     ax.selectAll('text').style('fill','#0f172a').style('font-size','11px');
     ax.selectAll('path, line').attr('stroke','#cbd5e1');
@@ -286,11 +302,11 @@
     state.svg.append('text')
       .attr('class','y-axis-title')
       .attr('transform','rotate(-90)')
-      .attr('x', -(state.margin.top + state.height / 2))
-      .attr('y', Math.max(12, state.margin.left - 72))
+      .attr('x', function(){ var fs = !!document.fullscreenElement; return -(state.margin.top + plotH / 2) + (fs ? 0 : 24); })
+      .attr('y', Math.max(28, state.margin.left - 80))
       .attr('text-anchor','middle')
       .style('fill','#0f172a')
-      .style('font-size','12px')
+      .style('font-size','13px')
       .text('Jurisdiction');
 
     // apply focus styling after render
@@ -299,7 +315,7 @@
 
   function draw(){ loadData(function(){ renderBars(currentYear()); }); }
 
-  // Toggle behavior
+  // Toggle behavior with persisted view
   function setupToggle(){
     var dotDesc = document.getElementById('btn-desc');
     var dotBars = document.getElementById('btn-bars');
@@ -313,6 +329,7 @@
       viewDesc.removeAttribute('hidden'); viewDesc.classList.add('active');
       viewBars.setAttribute('hidden',''); viewBars.classList.remove('active');
       if (actions) { actions.style.display = 'flex'; }
+      try { localStorage.setItem('viz3_view','desc'); } catch(e){}
     }
     function activateBars(){
       dotBars.classList.add('active'); dotDesc.classList.remove('active');
@@ -320,10 +337,13 @@
       viewBars.removeAttribute('hidden'); viewBars.classList.add('active');
       viewDesc.setAttribute('hidden',''); viewDesc.classList.remove('active');
       if (actions) { actions.style.display = 'none'; }
+      try { localStorage.setItem('viz3_view','bars'); } catch(e){}
       draw();
     }
     dotDesc.addEventListener('click', activateDesc);
     dotBars.addEventListener('click', activateBars);
+    var saved = null; try { saved = localStorage.getItem('viz3_view'); } catch(e){}
+    if (saved === 'bars') { activateBars(); } else { activateDesc(); }
   }
 
   // Update chart when year changes (if bars are visible)
@@ -346,11 +366,16 @@
     });
   }
 
-  // Resize handling when bars are visible
-  window.addEventListener('resize', function(){
+  // Resize and fullscreen handling when bars are visible
+  function redrawIfVisible(){
     var viewBars = document.getElementById('info3-bars');
-    if (viewBars && !viewBars.hasAttribute('hidden')) { draw(); }
-  });
+    if (viewBars && !viewBars.hasAttribute('hidden')) {
+      requestAnimationFrame(function(){ if (window.chart3BarsApi && window.chart3BarsApi.rebuild) window.chart3BarsApi.rebuild(); });
+      setTimeout(function(){ if (window.chart3BarsApi && window.chart3BarsApi.rebuild) window.chart3BarsApi.rebuild(); }, 120);
+    }
+  }
+  window.addEventListener('resize', redrawIfVisible);
+  document.addEventListener('fullscreenchange', redrawIfVisible);
 
   // Init
   document.addEventListener('DOMContentLoaded', function(){ setupToggle(); hookYearSelect(); hookMethodSelect(); });

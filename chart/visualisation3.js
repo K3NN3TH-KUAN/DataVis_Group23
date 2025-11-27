@@ -93,6 +93,7 @@
     updateFsLabel();
     positionFullscreenBtn();
     draw(+yearSelect.value);
+    if (window.chart3BarsApi && typeof window.chart3BarsApi.rebuild === 'function') { window.chart3BarsApi.rebuild(); }
   });
   document.addEventListener('fullscreenchange', function(){
     isFullscreen = !!document.fullscreenElement;
@@ -101,6 +102,7 @@
     updateFsLabel();
     positionFullscreenBtn();
     draw(+yearSelect.value);
+    if (window.chart3BarsApi && typeof window.chart3BarsApi.rebuild === 'function') { window.chart3BarsApi.rebuild(); }
   });
 
   var geoUrl = 'https://raw.githubusercontent.com/rowanhogan/australian-states/master/states.geojson';
